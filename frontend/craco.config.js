@@ -7,6 +7,17 @@ const config = {
 };
 
 module.exports = {
+  devServer: {
+    allowedHosts: 'all',
+    host: '0.0.0.0',
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8001',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
   webpack: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
