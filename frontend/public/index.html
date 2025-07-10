@@ -1,1 +1,30 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Web site created using create-react-app"/><link rel="apple-touch-icon" href="/logo192.png"/><link rel="manifest" href="/manifest.json"/><title>React App</title><script defer="defer" src="/static/js/main.1eeb180e.js"></script><link href="/static/css/main.a2291c53.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Web site created using create-react-app"/><link rel="apple-touch-icon" href="/logo192.png"/><link rel="manifest" href="/manifest.json"/><title>React App</title><script defer="defer" src="/static/js/main.1eeb180e.js"></script><link href="/static/css/main.a2291c53.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div>
+
+<script>
+// Wait for the React app to load then modify the login button
+setTimeout(function() {
+  // Find button or link with "Zaloguj do panelu" text
+  const loginButtons = Array.from(document.querySelectorAll('*')).filter(el => 
+    el.textContent && el.textContent.trim() === 'Zaloguj do panelu'
+  );
+  
+  loginButtons.forEach(button => {
+    // Remove existing click handlers
+    const newButton = button.cloneNode(true);
+    button.parentNode.replaceChild(newButton, button);
+    
+    // Add new click handler to redirect to our panel
+    newButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = '/panel';
+    });
+    
+    // If it's a link, change the href
+    if (newButton.tagName === 'A') {
+      newButton.href = '/panel';
+    }
+  });
+}, 2000);
+</script>
+
+</body></html>
