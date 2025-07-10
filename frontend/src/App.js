@@ -9,9 +9,71 @@ import { apiHelper } from './api/helper';
 
 // Komponent strony głównej
 const HomePage = () => {
+  const [showPanel, setShowPanel] = React.useState(false);
+  
+  React.useEffect(() => {
+    // Sprawdź czy jest to główna strona czy panel
+    if (window.location.pathname === '/') {
+      // Przekieruj na stronę z pierwszego repo
+      window.location.href = '/index.html';
+    }
+  }, []);
+  
   return (
     <div className="home-page" style={{ position: 'relative' }}>
-      {/* Przycisk do panelu */}
+      <iframe
+        src="/index.html"
+        title="Strona główna"
+        style={{
+          width: '100%',
+          height: '100vh',
+          border: 'none',
+          margin: 0,
+          padding: 0
+        }}
+        onLoad={() => {
+          // Dodaj przycisk do panelu po załadowaniu iframe
+          const iframe = document.querySelector('iframe');
+          if (iframe) {
+            try {
+              const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+              
+              // Stwórz przycisk
+              const button = iframeDoc.createElement('a');
+              button.href = '/panel';
+              button.innerHTML = 'Zaloguj do panelu';
+              button.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1000;
+                background: #2563eb;
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: 500;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                transition: background 0.2s;
+              `;
+              
+              button.addEventListener('mouseover', () => {
+                button.style.background = '#1d4ed8';
+              });
+              
+              button.addEventListener('mouseout', () => {
+                button.style.background = '#2563eb';
+              });
+              
+              iframeDoc.body.appendChild(button);
+            } catch (e) {
+              console.log('Nie można dodać przycisku do iframe:', e);
+            }
+          }
+        }}
+      />
+      
+      {/* Przycisk do panelu jako fallback */}
       <div style={{
         position: 'fixed',
         top: '20px',
@@ -24,75 +86,6 @@ const HomePage = () => {
         >
           Zaloguj do panelu
         </a>
-      </div>
-      
-      {/* Zawartość strony głównej */}
-      <div style={{
-        width: '100%',
-        height: '100vh',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        color: 'white',
-        textAlign: 'center',
-        padding: '20px'
-      }}>
-        <h1 style={{
-          fontSize: '4rem',
-          fontWeight: 'bold',
-          marginBottom: '2rem',
-          textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
-        }}>
-          System Ewidencji Czasu Pracy
-        </h1>
-        <p style={{
-          fontSize: '1.5rem',
-          marginBottom: '3rem',
-          maxWidth: '600px',
-          lineHeight: '1.6'
-        }}>
-          Profesjonalny system zarządzania czasem pracy dla firm. 
-          Prosty, bezpieczny i wydajny.
-        </p>
-        <div style={{
-          display: 'flex',
-          gap: '2rem',
-          flexWrap: 'wrap',
-          justifyContent: 'center'
-        }}>
-          <div style={{
-            background: 'rgba(255,255,255,0.1)',
-            padding: '2rem',
-            borderRadius: '10px',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,255,255,0.2)'
-          }}>
-            <h3 style={{ marginBottom: '1rem' }}>🏢 Multi-Firm</h3>
-            <p>Obsługa wielu firm w jednym systemie</p>
-          </div>
-          <div style={{
-            background: 'rgba(255,255,255,0.1)',
-            padding: '2rem',
-            borderRadius: '10px',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,255,255,0.2)'
-          }}>
-            <h3 style={{ marginBottom: '1rem' }}>📱 QR Scanner</h3>
-            <p>Szybkie logowanie przez kody QR</p>
-          </div>
-          <div style={{
-            background: 'rgba(255,255,255,0.1)',
-            padding: '2rem',
-            borderRadius: '10px',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,255,255,0.2)'
-          }}>
-            <h3 style={{ marginBottom: '1rem' }}>📊 Raporty</h3>
-            <p>Szczegółowe raporty i analiza</p>
-          </div>
-        </div>
       </div>
     </div>
   );
