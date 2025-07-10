@@ -7,26 +7,6 @@ import AdminDashboard from './components/AdminDashboard';
 import OwnerDashboard from './components/OwnerDashboard';
 import { apiHelper } from './api/helper';
 
-// Komponent strony głównej 
-const HomePage = () => {
-  React.useEffect(() => {
-    // Przekieruj na stronę z pierwszego repo
-    window.location.href = '/index.html';
-  }, []);
-  
-  return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100vh',
-      fontSize: '18px'
-    }}>
-      Przekierowuję na stronę główną...
-    </div>
-  );
-};
-
 // Komponent panelu administracyjnego
 const PanelApp = () => {
   const [user, setUser] = useState(null);
@@ -98,16 +78,29 @@ const PanelApp = () => {
 };
 
 function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/panel/*" element={<PanelApp />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+  // Check if we're on the panel route
+  const isPanel = window.location.pathname.startsWith('/panel');
+  
+  if (isPanel) {
+    return (
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/panel/*" element={<PanelApp />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    );
+  }
+  
+  // For all other routes, redirect to static page
+  useEffect(() => {
+    if (window.location.pathname === '/') {
+      window.location.href = '/index.html';
+    }
+  }, []);
+  
+  return null;
 }
 
 export default App;
